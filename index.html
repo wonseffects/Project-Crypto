@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoVault - Negocie criptomoedas como um profissional</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: #866DB9;
+background: linear-gradient(0deg, rgba(134, 109, 185, 1) 0%, rgba(39, 0, 66, 1) 36%, rgba(7, 0, 13, 1) 70%);
+            color: #ffffff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Partículas no fundo */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: rise linear infinite;
+        }
+
+        @keyframes rise {
+            0% {
+                transform: translateY(100vh) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.4;
+            }
+            90% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            display: grid;
+            grid-template-columns: 1fr 2fr 1fr;
+            gap: 30px;
+            min-height: 100vh;
+        }
+
+        /* Seção esquerda */
+        .left-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .main-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            background: linear-gradient(90deg, #ffffff, #c39fff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            background: linear-gradient(90deg, #8a2be2, #6a1b9a);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+            width: fit-content;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(138, 43, 226, 0.6);
+        }
+
+        /* Seção do meio - Comércio rápido */
+        .middle-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .trade-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .crypto-option {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+
+        .crypto-option:hover {
+            background: rgba(255, 255, 255, 0.12);
+            border-color: rgba(138, 43, 226, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .crypto-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .crypto-name {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .crypto-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .btc-icon {
+            background: linear-gradient(135deg, #f7931a, #ff8c00);
+            color: #ffffff;
+        }
+
+        .eth-icon {
+            background: linear-gradient(135deg, #627eea, #4a5bef);
+            color: #ffffff;
+        }
+
+        .crypto-price {
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+
+        .trade-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .detail-label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .detail-value {
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .trade-button {
+            background: linear-gradient(90deg, #8a2be2, #6a1b9a);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .trade-button:hover {
+            background: linear-gradient(90deg, #9d3df5, #7a2cb8);
+        }
+
+        /* Seção direita */
+        .right-section {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .market-section, .security-section {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .market-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .market-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .market-item:last-child {
+            border-bottom: none;
+        }
+
+        .market-pair {
+            font-weight: bold;
+        }
+
+        .market-price {
+            font-weight: bold;
+        }
+
+        .price-change {
+            font-size: 0.9rem;
+            padding: 3px 8px;
+            border-radius: 4px;
+        }
+
+        .positive {
+            color: #4caf50;
+            background-color: rgba(76, 175, 80, 0.1);
+        }
+
+        .negative {
+            color: #f44336;
+            background-color: rgba(244, 67, 54, 0.1);
+        }
+
+        .security-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .security-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .security-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(138, 43, 226, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #c39fff;
+        }
+
+        .security-text {
+            flex: 1;
+        }
+
+        .security-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .security-desc {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Responsividade */
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .main-title {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 1.8rem;
+            }
+            
+            .trade-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Efeito de partículas no fundo -->
+    <div class="particles-container" id="particles"></div>
+
+    <div class="container">
+        <!-- Seção esquerda -->
+        <div class="left-section">
+            <h1 class="main-title">Negocie criptomoedas como um profissional</h1>
+            <p class="description">
+                Acesse ferramentas de trading profissional, gráficos avançados e dados de mercado em tempo real. 
+                Com a CryptoVault, você tem tudo o que precisa para tomar decisões informadas e maximizar seus investimentos.
+            </p>
+            <button class="cta-button">Começar agora</button>
+        </div>
+
+        <!-- Seção do meio - Comércio rápido -->
+        <div class="middle-section">
+            <h2 class="section-title">
+                <i class="fas fa-bolt"></i>
+                Comércio rápido
+            </h2>
+            
+            <div class="trade-container">
+                <!-- Opção BTC -->
+                <div class="crypto-option">
+                    <div class="crypto-header">
+                        <div class="crypto-name">
+                            <div class="crypto-icon btc-icon">₿</div>
+                            Bitcoin (BTC)
+                        </div>
+                        <div class="crypto-price">$43,521.82</div>
+                    </div>
+                    
+                    <div class="trade-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Seu saldo</span>
+                            <span class="detail-value">0.002451 BTC</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Valor em USD</span>
+                            <span class="detail-value">$106.67</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Taxa de câmbio</span>
+                            <span class="detail-value">1 BTC = $43,521.82</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Tempo estimado</span>
+                            <span class="detail-value">~10 minutos</span>
+                        </div>
+                    </div>
+                    
+                    <button class="trade-button">Negociar Bitcoin</button>
+                </div>
+                
+                <!-- Opção ETH -->
+                <div class="crypto-option">
+                    <div class="crypto-header">
+                        <div class="crypto-name">
+                            <div class="crypto-icon eth-icon">Ξ</div>
+                            Ethereum (ETH)
+                        </div>
+                        <div class="crypto-price">$2,284.75</div>
+                    </div>
+                    
+                    <div class="trade-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Seu saldo</span>
+                            <span class="detail-value">0.05832 ETH</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Valor em USD</span>
+                            <span class="detail-value">$133.22</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Taxa de câmbio</span>
+                            <span class="detail-value">1 ETH = $2,284.75</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Tempo estimado</span>
+                            <span class="detail-value">~5 minutos</span>
+                        </div>
+                    </div>
+                    
+                    <button class="trade-button">Negociar Ethereum</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seção direita -->
+        <div class="right-section">
+            <!-- Mercados ao vivo -->
+            <div class="market-section">
+                <h2 class="section-title">
+                    <i class="fas fa-chart-line"></i>
+                    Mercados ao vivo
+                </h2>
+                
+                <div class="market-list">
+                    <div class="market-item">
+                        <span class="market-pair">BTC/USD</span>
+                        <div>
+                            <span class="market-price">$43,521.82</span>
+                            <span class="price-change positive">+2.45%</span>
+                        </div>
+                    </div>
+                    <div class="market-item">
+                        <span class="market-pair">ETH/USD</span>
+                        <div>
+                            <span class="market-price">$2,284.75</span>
+                            <span class="price-change positive">+1.82%</span>
+                        </div>
+                    </div>
+                    <div class="market-item">
+                        <span class="market-pair">BNB/USD</span>
+                        <div>
+                            <span class="market-price">$312.47</span>
+                            <span class="price-change negative">-0.76%</span>
+                        </div>
+                    </div>
+                    <div class="market-item">
+                        <span class="market-pair">SOL/USD</span>
+                        <div>
+                            <span class="market-price">$98.53</span>
+                            <span class="price-change positive">+5.21%</span>
+                        </div>
+                    </div>
+                    <div class="market-item">
+                        <span class="market-pair">ADA/USD</span>
+                        <div>
+                            <span class="market-price">$0.6124</span>
+                            <span class="price-change positive">+3.14%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recursos de segurança -->
+            <div class="security-section">
+                <h2 class="section-title">
+                    <i class="fas fa-shield-alt"></i>
+                    Recursos de segurança
+                </h2>
+                
+                <div class="security-list">
+                    <div class="security-item">
+                        <div class="security-icon">
+                            <i class="fas fa-lock"></i>
+                        </div>
+                        <div class="security-text">
+                            <div class="security-title">Autenticação de dois fatores</div>
+                            <div class="security-desc">Proteção adicional para sua conta</div>
+                        </div>
+                    </div>
+                    <div class="security-item">
+                        <div class="security-icon">
+                            <i class="fas fa-fingerprint"></i>
+                        </div>
+                        <div class="security-text">
+                            <div class="security-title">Biometria</div>
+                            <div class="security-desc">Acesso seguro com impressão digital</div>
+                        </div>
+                    </div>
+                    <div class="security-item">
+                        <div class="security-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="security-text">
+                            <div class="security-title">Seguro de ativos</div>
+                            <div class="security-desc">Proteção contra perdas e fraudes</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Efeito de partículas no fundo
+        document.addEventListener('DOMContentLoaded', function() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 50;
+            
+            for (let i = 0; i < particleCount; i++) {
+                createParticle();
+            }
+            
+            function createParticle() {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Tamanho aleatório entre 5px e 15px
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                
+                // Posição horizontal aleatória
+                const posX = Math.random() * 100;
+                particle.style.left = `${posX}%`;
+                
+                // Duração da animação aleatória entre 15s e 30s
+                const duration = Math.random() * 15 + 15;
+                particle.style.animationDuration = `${duration}s`;
+                
+                // Atraso aleatório para que as partículas não comecem todas ao mesmo tempo
+                const delay = Math.random() * 5;
+                particle.style.animationDelay = `${delay}s`;
+                
+                particlesContainer.appendChild(particle);
+                
+                // Remover a partícula quando a animação terminar e criar uma nova
+                particle.addEventListener('animationiteration', () => {
+                    // Atualizar posição para criar efeito contínuo
+                    const newPosX = Math.random() * 100;
+                    particle.style.left = `${newPosX}%`;
+                });
+            }
+            
+            // Simular atualização de preços em tempo real
+            setInterval(updatePrices, 5000);
+            
+            function updatePrices() {
+                // Atualizar preço do BTC
+                const btcPriceElement = document.querySelector('.crypto-option:nth-child(1) .crypto-price');
+                const currentBtcPrice = parseFloat(btcPriceElement.textContent.replace('$', '').replace(',', ''));
+                const newBtcPrice = currentBtcPrice * (1 + (Math.random() * 0.02 - 0.01)); // Variação de ±1%
+                btcPriceElement.textContent = `$${newBtcPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+                
+                // Atualizar preço do ETH
+                const ethPriceElement = document.querySelector('.crypto-option:nth-child(2) .crypto-price');
+                const currentEthPrice = parseFloat(ethPriceElement.textContent.replace('$', '').replace(',', ''));
+                const newEthPrice = currentEthPrice * (1 + (Math.random() * 0.02 - 0.01)); // Variação de ±1%
+                ethPriceElement.textContent = `$${newEthPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+                
+                // Atualizar lista de mercados
+                const marketItems = document.querySelectorAll('.market-item');
+                marketItems.forEach(item => {
+                    const priceElement = item.querySelector('.market-price');
+                    const changeElement = item.querySelector('.price-change');
+                    
+                    const currentPrice = parseFloat(priceElement.textContent.replace('$', '').replace(',', ''));
+                    const newPrice = currentPrice * (1 + (Math.random() * 0.02 - 0.01)); // Variação de ±1%
+                    priceElement.textContent = `$${newPrice.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',')}`;
+                    
+                    // Atualizar percentual de mudança
+                    const changePercent = ((newPrice - currentPrice) / currentPrice * 100).toFixed(2);
+                    changeElement.textContent = `${changePercent > 0 ? '+' : ''}${changePercent}%`;
+                    changeElement.className = `price-change ${changePercent > 0 ? 'positive' : 'negative'}`;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
